@@ -1,6 +1,6 @@
 var capture;
 var glasses;
-var col1 = '#006666';
+var col1 = '#ff0080';
 var col2 = '#ff6600';
 var mic;
 
@@ -20,7 +20,7 @@ function setup() {
   capture.hide();
   noStroke();
 
-  glasses = new Glass(width / 2-20, height / 2, 50);
+  glasses = new Glass(width / 2 - 30, height / 2, 50);
 }
 
 function draw() {
@@ -58,25 +58,26 @@ function draw() {
   }
 
   // glasses
-
   glasses.display();
 
-//mic
+  //mic
   var volume = mic.getLevel();
-console.log(volume)
-fill(color('#ff6600'));
-ellipse(width / 2, height / 2, volume * 200)
+  console.log(volume)
+  fill(color('#ff6600'));
+  ellipse(width / 2, height / 2, volume * 200)
 
   //change the filter
-
   if (keyIsDown(UP_ARROW)) {
     filter(INVERT);
   }
 
   //text
   textAlign(CENTER)
-  text('Press up arrow to see your real image', width / 2, 100)
-
+  text('Press up arrow to change filter', width / 2, 100)
+  push()
+  textSize(20)
+  text('TRY ON THESE GLASSES!', width / 2, height/2 + 50);
+  pop()
 }
 
 function mouseDragged(e) {
@@ -104,21 +105,25 @@ function Glass(_x, _y, _diam) {
     stroke(this.color);
     strokeWeight(8);
     ellipse(this.x, this.y, this.diam)
-    line(this.x + 25, this.y, this.x + 50, this.y)
     ellipse(this.x + 75, this.y, this.diam)
+    strokeWeight(4);
+    line(this.x + 25, this.y - 5, this.x + 50, this.y - 5)
     pop()
   }
 
   this.dragged = function() {
     this.x = mouseX;
     this.y = mouseY;
+    this.diam = _diam;
     this.color = col2;
+
 
   }
 
   this.released = function() {
     this.x = _x;
     this.y = _y;
+    this.diam = _diam;
     this.color = col1;
   }
 
