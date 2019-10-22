@@ -2,7 +2,6 @@ var capture;
 var glasses;
 var col1 = '#ff0080';
 var col2 = '#ff6600';
-var mic;
 
 
 function preload() {
@@ -10,27 +9,23 @@ function preload() {
 }
 
 function setup() {
-  createCanvas(windowWidth, windowHeight)
-
-  mic = new p5.AudioIn();
-  mic.start();
+  createCanvas(windowWidth, windowHeight);
+  noStroke();
 
   capture = createCapture(VIDEO);
   capture.size(640, 480)
   capture.hide();
-  noStroke();
 
-  glasses = new Glass(width / 2 - 30, height / 2, 50);
+  glasses = new Glass(width / 2 - 38, height / 2, 50);
+
 }
 
 function draw() {
   background('#006666')
 
-
-
-  //image from camera
+  //images from camera
   var myFeed = capture.loadPixels();
-  var xImg = 320;
+  var xImg = 450;
   var yImg = 240;
   var wImg = 480;
   var hImg = 360;
@@ -46,25 +41,20 @@ function draw() {
   pop()
 
 
-
   // grid of coloured rectangles
-  for (var x = 25; x < width; x += 25) {
-    for (var y = 25; y < height; y += 25) {
+  for (var x = 0; x < width; x += 25) {
+    for (var y = 0; y < height; y += 25) {
       var distance = dist(x, y, mouseX, mouseY);
       var remap = map(distance, 0, width, 0, 50);
-      fill(mouseX / 2, 255 - (mouseX / 2 + mouseY / 2), mouseY);
+      fill(mouseX / 5, 255 - (mouseX / 2 + mouseY / 2), mouseY);
       rect(x, y, remap, remap);
     }
   }
 
+
   // glasses
   glasses.display();
 
-  //mic
-  var volume = mic.getLevel();
-  console.log(volume)
-  fill(color('#ff6600'));
-  ellipse(width / 2, height / 2, volume * 200)
 
   //change the filter
   if (keyIsDown(UP_ARROW)) {
@@ -74,9 +64,13 @@ function draw() {
   //text
   textAlign(CENTER)
   text('Press up arrow to change filter', width / 2, 100)
+
   push()
-  textSize(20)
-  text('TRY ON THESE GLASSES!', width / 2, height/2 + 50);
+  var myText = 'Try on these new glasses!'
+  drawingContext.font = "20px Kaushan Script";
+  drawingContext.textAlign = "center";
+  fill(color(col2));
+  text(myText, width / 2, height / 2 + 50)
   pop()
 }
 
@@ -97,7 +91,7 @@ function Glass(_x, _y, _diam) {
   this.x = _x;
   this.y = _y;
   this.diam = _diam;
-  this.color = col1;
+  this.color = col2;
 
   this.display = function() {
     push()
@@ -115,7 +109,7 @@ function Glass(_x, _y, _diam) {
     this.x = mouseX;
     this.y = mouseY;
     this.diam = _diam;
-    this.color = col2;
+    this.color = color(mouseX / 5, 255 - (mouseX / 2 + mouseY / 2), mouseY);
 
 
   }
@@ -124,7 +118,7 @@ function Glass(_x, _y, _diam) {
     this.x = _x;
     this.y = _y;
     this.diam = _diam;
-    this.color = col1;
+    this.color = col2;
   }
 
 }
